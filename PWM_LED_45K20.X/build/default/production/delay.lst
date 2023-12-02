@@ -1,0 +1,97 @@
+MPASM 5.87                         DELAY.ASM   12-2-2023  0:55:13         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;******************************************************************************
+                      00002 ;                                                                             *
+                      00003 ;    Filename:        PWM 18f45k20                                        *
+                      00004 ;    Date:             03/10/2023                                             *
+                      00005 ;    File Version:      Versión 1                                            *
+                      00006 ;    Author:          Oscar David Poblador Parra                              *
+                      00007 ;    Código:          20211005116                                             *
+                      00008 ;    Company:        Universidad Distrital FJC                                *
+                      00009 ;                                                                             *
+                      00010 ;******************************************************************************
+                      00011     
+                      00012 #include "Delay.inc"
+                      00001 ;******************************************************************************
+                      00002 ;                                                                             *
+                      00003 ;    Filename:        PWM 18f45k20                                        *
+                      00004 ;    Date:             03/10/2023                                             *
+                      00005 ;    File Version:      Versión 1                                            *
+                      00006 ;    Author:          Oscar David Poblador Parra                              *
+                      00007 ;    Código:          20211005116                                             *
+                      00008 ;    Company:        Universidad Distrital FJC                                *
+                      00009 ;                                                                             *
+                      00010 ;******************************************************************************
+                      00011     
+                      00012 ;-------------------------------------------------------------------------------
+                      00013 ;               CONFIGURACIÓN PROGRAMAS DELAY 
+                      00014 ;------------------------------------------------------------------------------- 
+                      00015     #define load_d1   0x11
+                      00016 Delay_ram udata     ;configura la posición de almacenamiento de registros según convenga
+000000                00017 d1 res 1            ; Reseva 1 byte a el registro d1
+000001                00018 d2 res 1            ; Reseva 1 byte a el registro d2
+000002                00019 d3 res 1            ; Reseva 1 byte a el registro d3
+                      00020 
+                      00013  
+                      00014 Delay_ code         ; Permite diferenciar código para el LINKER
+                      00015 
+  0000                00016     global Delay100             ; Define nombre global para implementación
+                      00017  
+000000                00018 Delay100
+                      00019         
+                      00020         
+                      00021         ; Delay = 0.1 seconds
+                      00022 ; Clock frequency = 8 MHz
+                      00023 
+                      00024 ; Actual delay = 0.1 seconds = 200000 cycles
+                      00025 ; Error = 0 %
+                      00026 
+                      00027 
+                      00028                         ;199998 cycles
+000000 0E3F           00029         movlw   0x3F
+000002 6E??           00030         movwf   d1
+000004 0E9D           00031         movlw   0x9D
+000006 6E??           00032         movwf   d2
+000008                00033 Delay_0
+MPASM 5.87                         DELAY.ASM   12-2-2023  0:55:13         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+000008 2E??           00034         decfsz  d1, f
+00000A EF?? F???      00035         goto    $+3*2
+00000E 2E??           00036         decfsz  d2, f
+000010 EF?? F???      00037         goto    Delay_0
+                      00038 
+                      00039                         ;2 cycles
+000014 EF?? F???      00040         goto    $+1*4
+                      00041                         ;4 cycles (including call)
+000018 0012           00042     return
+                      00043         
+                      00044         END
+MPASM 5.87                         DELAY.ASM   12-2-2023  0:55:13         PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+Delay100                          00000000
+Delay_0                           00000008
+_Delay__000A                      0000000A
+_Delay__0014                      00000014
+__18F45K20                        00000001
+d1                                00000000
+d2                                00000001
+d3                                00000002
+load_d1                           0x11
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+
